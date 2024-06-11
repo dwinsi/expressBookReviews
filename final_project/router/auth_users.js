@@ -80,11 +80,11 @@ regd_users.put("/auth/review/:isbn", (req, res) => {
 });
 
 regd_users.delete("/auth/review/:isbn", (req, res) => {
-  const username = req.session.username;
+  const username = req.session.authorization.username;
   const isbn = req.params.isbn;
   
-  let booksList = Object.values(books)
-  const book = booksList.find(b => b.isbn == isbn)
+  
+  const book = books[isbn];
   
   if (!book) {
     res.status(404).send(`The book with ISBN  ${isbn}  does not exist.`);
