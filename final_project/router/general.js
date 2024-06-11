@@ -81,4 +81,94 @@ public_users.get('/review/:isbn',function (req, res) {
   }
 });
 
+
+
+/*
+// Task 10:
+// Add the code for getting the list of books available in the shop (done in Task 1) using Promise callbacks or async-await with Axios.
+
+function getBookList() {
+  return new Promise((resolve, reject) => {
+    resolve(books);
+  });
+}
+
+public_users.get("/", function (req, res) {
+  getBookList().then(
+    (books) => res.send(JSON.stringify(books, null, 4)),
+    (error) => res.send("rejected")
+  );
+});
+
+
+// Task 11
+// Add the code for getting the book details based on ISBN (done in Task 2) using Promise callbacks or async-await with Axios.
+
+function getFromISBN(isbn) {
+  let curent_book = books[isbn];
+  return new Promise((resolve, reject) => {
+    if (curent_book) {
+      resolve(curent_book);
+    } else {
+      reject("Cant find book with given ISBN number");
+    }
+  });
+}
+
+public_users.get("/isbn/:isbn", function (req, res) {
+  const isbn_number = req.params.isbn;
+  getFromISBN(isbn_number).then(
+    (bk) => res.send(JSON.stringify(bk, null, 4)),
+    (error) => res.send(error)
+  );
+});
+
+// Task 12
+// Add the code for getting the book details based on Author (done in Task 3) using Promise callbacks or async-await with Axios.
+
+function getFromAuthor(author) {
+  let answer = [];
+  return new Promise((resolve, reject) => {
+    for (var isbn_number in books) {
+      let current_book = books[isbn_number];
+      if (current_book.author === author) {
+        answer.push(current_book);
+      }
+    }
+    resolve(answer);
+  });
+}
+
+public_users.get("/author/:author", function (req, res) {
+  const author_name = req.params.author;
+  getFromAuthor(author_name).then((result) =>
+    res.send(JSON.stringify(result, null, 4))
+  );
+});
+
+
+// Task 13:
+// Add the code for getting the book details based on Title (done in Task 4) using Promise callbacks or async-await with Axios.
+function getFromTitle(title) {
+  let answer = [];
+  return new Promise((resolve, reject) => {
+    for (var isbn_number in books) {
+      let current_book = books[isbn_number];
+      if (current_book.title === title) {
+        answer.push(current_book);
+      }
+    }
+    resolve(answer);
+  });
+}
+
+public_users.get("/title/:title", function (req, res) {
+  const book_title = req.params.title;
+  getFromTitle(book_title).then((result) =>
+    res.send(JSON.stringify(result, null, 4))
+  );
+});
+
+*/
+
 module.exports.general = public_users;

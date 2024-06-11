@@ -54,30 +54,51 @@ regd_users.post("/login", (req,res) => {
 
 // Add a book review
 regd_users.put("/auth/review/:isbn", (req, res) => {
-    //Write your code here
-    const { isbn } = req.params;
-    const { review } = req.params;
+    const isbn = req.params.isbn;
+    const review = req.query.review;
+    const username = req.session.authorization.username;
 
-    const token = req.headers['authorization'];
-
-    if (!token) {
-      return res.status(401).json({message: "Unauthorized Access."});
+    if (!review) {
+      return res.status(400).json({ message: 'No review has been submitted' });
     }
 
-    jwt.verify(token, "access", (err, decoded) => {
-      if(err){
-        return res.status(401).json({message:"Invalid Token!"});
-      }
-      const username = decoded.username;
+    // Check if the book exists in the database
+    if (!books[isbn]) {
+        return res.status(404).json({ message: `book with ISBN ${isbn} does not exist` });
+    }
 
-      if (!books[isbn]) {
-        return res.status(404).json({message:`Book not found with ISBN ${isbn}`});
-      }
+    // Check if the user has already reviewed the book
+    if (books[isbn].reviews[username]) {
+        // If the user has already reviewed the book, modify the existing review
+        books[isbn].reviews[username] = review;
+        return res.status(200).json({ message: `Review updated for book with ISBN ${isbn} by ${username}` });
+    } else {
+        // If the user has not reviewed the book, add a new review
+        books[isbn].reviews[username] = review;
+        return res.status(201).json({ message: `New Review added for book with ISBN ${isbn} by user ${username}` });
+    }
+});
 
-      books[isbn].reviews[username] = review;
+regd_users.delete("/auth/review/:isbn", (req, res) => {
+  const username = req.session.username;
+  const isbn = req.params.isbn;
+  
+  let booksList = Object.values(books)
+  const book = booksList.find(b => b.isbn == isbn)
+  
+  if (!book) {
+    res.status(404).send(`The book with ISBN  ${isbn}  does not exist.`);
+    return;
+  }
+  
+  if (!book.reviews[username]) {
+    res.status(404).send(`You have not posted any review for the book with ISBN  ${isbn}: ==>${JSON.stringify(book)}`);
+    return;
+  }
+  
+  delete book.reviews[username];
+  res.send(`Your review has been deleted for the book with ${isbn} isbn: ==>${JSON.stringify(book)}`);
 
-      return res.status(200).json({message:`Review added successfully. ${books[isbn].reviews}`})
-    })
 });
 
 module.exports.authenticated = regd_users;
