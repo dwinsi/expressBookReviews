@@ -83,92 +83,80 @@ public_users.get('/review/:isbn',function (req, res) {
 
 
 
-/*
 // Task 10:
 // Add the code for getting the list of books available in the shop (done in Task 1) using Promise callbacks or async-await with Axios.
 
-function getBookList() {
-  return new Promise((resolve, reject) => {
-    resolve(books);
-  });
+const axios = require('axios');
+const getBookList = async (url) => {
+    try {
+        const response = await axios.get(url);
+        const listOfBooks = response.data;
+        console.log(listOfBooks);
+    } catch (error) {
+        console.error(error.toString());
+    }
 }
 
-public_users.get("/", function (req, res) {
-  getBookList().then(
-    (books) => res.send(JSON.stringify(books, null, 4)),
-    (error) => res.send("rejected")
-  );
-});
+console.log("Before connect URL");
+getBookList('http://localhost:5000/');
+console.log("After connect URL");
+
+
 
 
 // Task 11
 // Add the code for getting the book details based on ISBN (done in Task 2) using Promise callbacks or async-await with Axios.
 
-function getFromISBN(isbn) {
-  let curent_book = books[isbn];
-  return new Promise((resolve, reject) => {
-    if (curent_book) {
-      resolve(curent_book);
-    } else {
-      reject("Cant find book with given ISBN number");
-    }
+const getBookISBN = (url)=>{
+  const req = axios.get(url);
+  console.log(req);
+  req.then(resp => {
+      let book = resp.data;
+    console.log(book);
+    })
+  .catch(err => {
+      console.log(err.toString())
   });
 }
-
-public_users.get("/isbn/:isbn", function (req, res) {
-  const isbn_number = req.params.isbn;
-  getFromISBN(isbn_number).then(
-    (bk) => res.send(JSON.stringify(bk, null, 4)),
-    (error) => res.send(error)
-  );
-});
+console.log("Before connect URL")
+getBookISBN('http://localhost:5000/isbn/1');
+console.log("After connect URL")
 
 // Task 12
 // Add the code for getting the book details based on Author (done in Task 3) using Promise callbacks or async-await with Axios.
 
-function getFromAuthor(author) {
-  let answer = [];
-  return new Promise((resolve, reject) => {
-    for (var isbn_number in books) {
-      let current_book = books[isbn_number];
-      if (current_book.author === author) {
-        answer.push(current_book);
-      }
-    }
-    resolve(answer);
+const getBookFromAuthor = (url)=>{
+  const req = axios.get(url);
+  console.log(req);
+  req.then(resp => {
+      let book = resp.data;
+    console.log(book);
+    })
+  .catch(err => {
+      console.log(err.toString())
   });
 }
-
-public_users.get("/author/:author", function (req, res) {
-  const author_name = req.params.author;
-  getFromAuthor(author_name).then((result) =>
-    res.send(JSON.stringify(result, null, 4))
-  );
-});
+console.log("Before connect URL")
+getBookFromAuthor('http://localhost:5000/author/Unknown');
+console.log("After connect URL")
 
 
 // Task 13:
 // Add the code for getting the book details based on Title (done in Task 4) using Promise callbacks or async-await with Axios.
-function getFromTitle(title) {
-  let answer = [];
-  return new Promise((resolve, reject) => {
-    for (var isbn_number in books) {
-      let current_book = books[isbn_number];
-      if (current_book.title === title) {
-        answer.push(current_book);
-      }
-    }
-    resolve(answer);
+const getBookFromTitle = (url)=>{
+  const req = axios.get(url);
+  console.log(req);
+  req.then(resp => {
+      let book = resp.data;
+    console.log(book);
+    })
+  .catch(err => {
+      console.log(err.toString())
   });
 }
+console.log("Before connect URL")
+getBookFromTitle('http://localhost:5000/title/Fairy tales');
+console.log("After connect URL")
 
-public_users.get("/title/:title", function (req, res) {
-  const book_title = req.params.title;
-  getFromTitle(book_title).then((result) =>
-    res.send(JSON.stringify(result, null, 4))
-  );
-});
-
-*/
 
 module.exports.general = public_users;
